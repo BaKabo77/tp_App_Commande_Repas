@@ -1,4 +1,4 @@
-import { Meal, Order, PaiemantMethod } from "./meals.js";
+import { Meal, Order } from "./meals.js";
 
 export type Wallet = number | { main: number; bonus?: number };
 
@@ -50,7 +50,7 @@ export class User {
         this.wallet.bonus = 0;
     }
 
-    orderMeal(meal: Meal, paiementMethod: PaiemantMethod): Order {
+    orderMeal(meal: Meal): Order {
         const total = meal.price;
         const balance = this.getBalance();
         if (balance < total) {
@@ -61,7 +61,6 @@ export class User {
             id: Date.now(),
             meals: [meal],
             total,
-            paiemntMethod: paiementMethod,
             userName: this.name,
         };
 
