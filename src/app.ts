@@ -1,8 +1,13 @@
 import { TropPauvreErreur, User } from "./user.js";
-import { Meal } from "./meals.js";
+import { Meal, Order } from "./meals.js";
 
 const STORAGE_KEY = "orders";
-const user = new User(1, "Bob", 30);
+
+const userName = prompt("Quel est votre nom ?") || "Anonyme";
+const walletInput = prompt(`Bonjour ${userName}, quel est votre solde initial (€) ?`);
+const walletAmount = parseFloat(walletInput ?? "0") || 0;
+
+const user = new User(1, userName, walletAmount);
 
 function saveOrders(): void {
     localStorage.setItem(STORAGE_KEY, JSON.stringify(user.orders));
@@ -11,7 +16,14 @@ function saveOrders(): void {
 function loadOrders(): void {
     const saved = localStorage.getItem(STORAGE_KEY);
     if (saved) {
-        user.orders = JSON.parse(saved);
+        const parsed = JSON.parse(saved) as Array<Partial<Order>>;
+        user.orders = parsed.map((order) => ({
+            id: order.id ?? Date.now(),
+            meals: order.meals ?? [],
+            total: order.total ?? 0,
+            paiemntMethod: order.paiemntMethod ?? "cash",
+            userName: order.userName ?? "Utilisateur inconnu",
+        }));
     }
 }
 
@@ -35,21 +47,34 @@ function displayWallet(): void {
 
 function displayOrders(): void {
     const orderList = document.getElementById("orderList");
+    const totalEl = document.getElementById("totalSpent");
     if (!orderList) return;
 
     orderList.innerHTML = "";
 
     if (user.orders.length === 0) {
         orderList.innerHTML = "<li class='list-group-item text-muted'>Aucune commande</li>";
+        if (totalEl) totalEl.textContent = "0";
         return;
     }
+
+    const totalSpent = user.orders.reduce((sum, o) => sum + o.total, 0);
 
     user.orders.forEach((order) => {
         const item = document.createElement("li");
         item.className = "list-group-item";
-        item.textContent = `Commande #${order.id} — ${order.meals.map(m => m.name).join(", ")} — ${order.total}EUR`;
+        item.textContent = `${order.userName} — Commande #${order.id} — ${order.meals.map(m => m.name).join(", ")} — ${order.total}EUR`;
         orderList.appendChild(item);
     });
+
+    if (totalEl) totalEl.textContent = totalSpent.toString();
+}
+
+function clearOrders(): void {
+    user.orders = [];
+    localStorage.removeItem(STORAGE_KEY);
+    displayOrders();
+    displayWallet();
 }
 
 function displayMeals(meals: Meal[]): void {
@@ -102,6 +127,8 @@ async function main(): Promise<void> {
     displayOrders();
     const meals = await getMeals();
     displayMeals(meals);
+
+    document.getElementById("clearOrdersBtn")?.addEventListener("click", clearOrders);
 }
 
 main();

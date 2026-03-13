@@ -108,10 +108,14 @@
 <div class="container pb-5">
     <div class="card shadow">
         <div class="card-body">
-            <h5 class="card-title">Historique des commandes</h5>
-            <ul id="orderList" class="list-group">
+            <div class="d-flex justify-content-between align-items-center mb-2">
+                <h5 class="card-title mb-0">Historique des commandes</h5>
+                <button id="clearOrdersBtn" class="btn btn-sm btn-danger">Effacer l'historique</button>
+            </div>
+            <ul id="orderList" class="list-group mb-3">
                 <!-- rempli dynamiquement -->
             </ul>
+            <p class="mb-0"><strong>Total dépensé :</strong> <span id="totalSpent">0</span> €</p>
         </div>
     </div>
 </div>

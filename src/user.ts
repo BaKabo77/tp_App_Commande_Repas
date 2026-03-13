@@ -62,6 +62,7 @@ export class User {
             meals: [meal],
             total,
             paiemntMethod: paiementMethod,
+            userName: this.name,
         };
 
         this.debit(total);

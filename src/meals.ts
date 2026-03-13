@@ -12,6 +12,7 @@ type Order = {
   meals: Meal[]
   total: number
   paiemntMethod: PaiemantMethod
+  userName?: string
 }
 
 export { Meal, Order, PaiemantMethod };
