@@ -15,6 +15,10 @@
 
     <h1 class="text-center mb-5">Gestion de Menu Restaurant</h1>
 
+    <div class="alert alert-info text-center mb-4">
+        Portefeuille de <strong id="userName"></strong> : <strong><span id="walletDisplay">0</span> €</strong>
+    </div>
+
     <div class="row">
 
         <!-- Création de repas -->
@@ -101,7 +105,17 @@
 
 </div>
 
-<!-- Script compilé depuis TypeScript -->
+<div class="container pb-5">
+    <div class="card shadow">
+        <div class="card-body">
+            <h5 class="card-title">Historique des commandes</h5>
+            <ul id="orderList" class="list-group">
+                <!-- rempli dynamiquement -->
+            </ul>
+        </div>
+    </div>
+</div>
+
 <script type="module" src="dist/app.js"></script>
 
 </body>

@@ -1,4 +1,4 @@
-import { Meal, Order, PaiemantMethod } from "./meals";
+import { Meal, Order, PaiemantMethod } from "./meals.js";
 
 export type Wallet = number | { main: number; bonus?: number };
 
